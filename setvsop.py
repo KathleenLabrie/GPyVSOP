@@ -77,18 +77,18 @@ def main():
         # Move and uncompress flat
         flatpath = os.path.join('..','..','downloads',flat+'.gz')
         os.system(' '.join(['mv',flatpath, '.']))
-        os.system(' '.join(['gunzip',flatpath]))
+        os.system(' '.join(['gunzip',flat+'.gz']))
         
         # Move and uncompress arc
         arcpath = os.path.join('..','..','downloads',arc+'.gz')
         os.system(' '.join(['mv',arcpath, '.']))
-        os.system(' '.join(['gunzip',arcpath]))
+        os.system(' '.join(['gunzip',arc+'.gz']))
         
         # Move and uncompress science frames
         for sci in sciframes:
             scipath = os.path.join('..','..','downloads',sci+'.gz')
             os.system(' '.join(['mv',scipath, '.']))
-            os.system(' '.join(['gunzip',scipath]))           
+            os.system(' '.join(['gunzip',sci+'.gz']))           
 
         # Return to original directory
         os.chdir(rootdir)
@@ -103,7 +103,7 @@ def main():
     frun.write('bias=\''+bias+'\'\n')
     frun.write('logfile=\''+targetname+'.log\'\n')
     frun.write('\n')
-    towrite = 'python /data/vsop/GPyVSOP/gmosLS.py ${sci} --flat=${flat} --arc=${arc} --bias=${bias} --rawdir=.. --wikidir=../wiki --logfile=${logfile}'
+    towrite = 'gmosLS ${sci} --flat=${flat} --arc=${arc} --bias=${bias} --rawdir=.. --wikidir=../wiki --logfile=${logfile}'
     if options.nsrc > 1:
         towrite = '%s --nsrc=%d' % (towrite,options.nsrc)
     frun.write(towrite+'\n')
@@ -134,7 +134,7 @@ def main():
             fpub.write(srcmef+'=\''+srcgem+'\'\n')
     fpub.write('\n')
     
-    publish = 'python /data/vsop/GPyVSOP/publish.py -v '
+    publish = 'publish -v '
     commonopts = ' --getvsopname --mefdir=../redux --publish'
     for obs in specidList:
         j = 0
