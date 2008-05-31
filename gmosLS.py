@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env python
 #
 # Import core Python modules
 import optparse, re, shutil, os.path

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#
 # Import core Python modules
 import optparse, os.path, re# string, datetime, tempfile
 

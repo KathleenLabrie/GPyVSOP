@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #
 # Look at VSOP spectra
 #
