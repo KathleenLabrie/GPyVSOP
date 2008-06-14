@@ -3,7 +3,7 @@
 # Import core Python modules
 import optparse, os, os.path
 
-VERSION = '1.0'
+VERSION = '1.0.1'
 
 def main():
 
@@ -97,7 +97,7 @@ def main():
     frun = open(os.path.join(targetpath,'run'+options.obsnb), mode='w')
     frun.write('#!/bin/sh\n')
     frun.write('\n')
-    frun.write('sci=\''+','.join(sciframes)+'\'\n')
+    frun.write('sci=\''+' '.join(sciframes)+'\'\n')
     frun.write('flat=\''+flat+'\'\n')
     frun.write('arc=\''+arc+'\'\n')
     frun.write('bias=\''+bias+'\'\n')
