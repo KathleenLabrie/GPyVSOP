@@ -13,9 +13,11 @@ import pyraf, iraf
 from pyraf.iraf import gemini
 
 # Import GPyVSOP modules
+import GPyVSOP
 import gmosLSutil, GPyVSOPutil
 
-VERSION = '1.0.2'
+#VERSION = '1.0.2'
+VERSION = GPyVSOP.__version__
 matchfits = re.compile(r'(\.fits)$')
 matchvsopname = re.compile(r'\.(\d\d\d)_s1d')
 
@@ -44,7 +46,7 @@ def main():
     p.add_option('--rawdir', action='store', type='string', dest='rawdir', default='./', help='path to the raw data')
     p.add_option('--wikidir', action='store', type='string', dest='wikidir', default='./', help='path to upload directory')
     p.add_option('--instrument', action='store', type='string', dest='instrument', help='GMOSN or GMOSS')
-    p.add_option('--nofits', action='store_true', help='do not generate the VSOP FITS file')
+    p.add_option('--nofits', action='store_true', default=False, help='do not generate the VSOP FITS file')
     p.add_option('--combine', action='store_true', help='combine science spectra')
     p.add_option('--nsrc', action='store', default=1, help='number of sources to extract (0 if undetermined)')
     p.add_option('--keep2d', action='store_true', help='keep 2d spectrum and assign VSOP name')
@@ -210,7 +212,7 @@ def main():
             newhdulist.close()
             
             if options.keep2d and (not options.nofits):
-                shutil.copy('es'+IDstr+'tgs'+dsetlist[i]+'.fits', os.path.join(options.wikidir, thissrcvsopname))
+                shutil.copy('s'+IDstr+'tgs'+dsetlist[i]+'.fits', os.path.join(options.wikidir, thissrcvsopname))
 
         if srcID+1 == int(options.nsrc):
             notdone = False     # we are done
