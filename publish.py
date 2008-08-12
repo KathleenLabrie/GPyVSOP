@@ -7,9 +7,10 @@ import optparse, os.path, re# string, datetime, tempfile
 import pyfits
 
 # Import GPyVSOP modules
+import GPyVSOP
 import GPyVSOPutil
 
-VERSION = '1.0.2'
+VERSION = GPyVSOP.__version__
 
 matchfits = re.compile(r"(\.fits)$")
 matchvsopname = re.compile(r'\.(\d\d\d)_s1d')
@@ -81,6 +82,12 @@ def main():
             if os.path.exists(vsopfile) == False:
                 errmsg = 'File \''+vsopfile+'\' not found'
                 raise IOError, errmsg
+            if options.keep2d:
+                if os.path.exists(vsop2dfile) == False:
+                    errmsg = 'File \''+vsop2dfile+'\' not found'
+                    print errmsg
+                    print 'Turning --keep2d option off'
+                    options.keep2d = False
         except:
             raise
     else:

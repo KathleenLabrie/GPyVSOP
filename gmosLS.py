@@ -16,7 +16,6 @@ from pyraf.iraf import gemini
 import GPyVSOP
 import gmosLSutil, GPyVSOPutil
 
-#VERSION = '1.0.2'
 VERSION = GPyVSOP.__version__
 matchfits = re.compile(r'(\.fits)$')
 matchvsopname = re.compile(r'\.(\d\d\d)_s1d')
@@ -212,7 +211,10 @@ def main():
             newhdulist.close()
             
             if options.keep2d and (not options.nofits):
-                shutil.copy('s'+IDstr+'tgs'+dsetlist[i]+'.fits', os.path.join(options.wikidir, thissrcvsopname))
+                thissrc2dvsopname = matchvsopname.sub(substr+'_s2d', vsopnames[i])
+                thissrc2dfile = 's'+IDstr+'tgs'+dsetlist[i]+'.fits'
+                print 'Copying %s to %s' % (thissrc2dfile, thissrc2dvsopname)
+                shutil.copy(thissrc2dfile, os.path.join(options.wikidir, thissrc2dvsopname))
 
         if srcID+1 == int(options.nsrc):
             notdone = False     # we are done

@@ -3,7 +3,10 @@
 # Import core Python modules
 import optparse, os, os.path
 
-VERSION = '1.0.1'
+# Import GPyVSOP modules
+import GPyVSOP
+
+VERSION = GPyVSOP.__version__
 
 def main():
 
@@ -103,7 +106,7 @@ def main():
     frun.write('bias=\''+bias+'\'\n')
     frun.write('logfile=\''+targetname+'.log\'\n')
     frun.write('\n')
-    towrite = 'gmosLS ${sci} --flat=${flat} --arc=${arc} --bias=${bias} --rawdir=.. --wikidir=../wiki --logfile=${logfile}'
+    towrite = 'gmosLS ${sci} --flat=${flat} --arc=${arc} --bias=${bias} --rawdir=.. --wikidir=../wiki --logfile=${logfile} --keep2d'
     if options.nsrc > 1:
         towrite = '%s --nsrc=%d' % (towrite,options.nsrc)
     frun.write(towrite+'\n')
@@ -135,15 +138,21 @@ def main():
     fpub.write('\n')
     
     publish = 'publish -v '
-    commonopts = ' --getvsopname --mefdir=../redux --publish'
+    commonopts = ' --getvsopname --mefdir=../redux --publish --keep2d'
+    if options.debug:
+        print specidList
     for obs in specidList:
         j = 0
+        if options.debug:
+            print obs
         for (srcmef, srcgem) in obs:
+            if options.debug:
+                print j, srcmef, srcgem  
             towrite = publish+'${'+srcmef+'}'+commonopts
             if j != 0:
                 towrite = '%s --id=%d' % (towrite, (j+1))
             fpub.write(towrite+'\n') 
-            j =+ 1        
+            j += 1        
     fpub.close()
     os.chmod(os.path.join(targetpath,'pub'+options.obsnb), 0755)
     

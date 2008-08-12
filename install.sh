@@ -7,6 +7,7 @@ cp GPyVSOPutil.py $1/GPyVSOP/
 cp publish.py $1/GPyVSOP/
 cp setvsop.py $1/GPyVSOP/
 cp splot.py $1/GPyVSOP/
+cp __init__.py $1/GPyVSOP/
 
 mkdir -p $1/bin
 cd $1/bin
