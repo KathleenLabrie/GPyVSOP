@@ -1,3 +1,4 @@
 v1.0.1 [08.05.2008]:  Fixed VSOP name generator.  Wasn't formatting the fractions of seconds correctly for number < 100.
 v1.0.2 [12.05.2008]:  Copy 2d spectrum to wiki directory.  Change name to the VSOP name.
 v1.0.3 [08.08.2008]:  Fix publish for multisource > 2. Version set by __init__.py.  Fix keep2d option in gmosLS.
+v1.0.4 [06.10.2008]:  Implement a setup.py script for the package.
