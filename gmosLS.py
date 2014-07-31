@@ -17,6 +17,7 @@ import GPyVSOP
 import gmosLSutil, GPyVSOPutil
 
 VERSION = GPyVSOP.__version__
+GEMINIVERSION = gemini.version + gemini.verno
 matchfits = re.compile(r'(\.fits)$')
 matchvsopname = re.compile(r'\.(\d\d\d)_s1d')
 
@@ -26,6 +27,7 @@ def tagversion(fname):
     hdulist = pyfits.open(fname, mode='update')
     hdulist[0].header.update('VSOPPIPE', 'v'+VERSION, 'Version of VSOP pipeline')
     hdulist[0].header.add_history('Processed with GPyVSOP gmosLS v'+VERSION)
+    hdulist[0].header.add_history('Processed with Gemini IRAF '+GEMINIVERSION)
     hdulist.flush()
     hdulist.close()
 
@@ -49,6 +51,7 @@ def main():
     p.add_option('--combine', action='store_true', help='combine science spectra')
     p.add_option('--nsrc', action='store', default=1, help='number of sources to extract (0 if undetermined)')
     p.add_option('--keep2d', action='store_true', help='keep 2d spectrum and assign VSOP name')
+    p.add_option('--linelist', action='store', type='string', dest='linelist', default='gmos$data/CuAr_GMOS.dat',help='line list to use for wavecal')
 
     (options, args) = p.parse_args()
     
@@ -83,6 +86,7 @@ def main():
         print 'inlist: ', inlist
         print 'vsopnames: ', vsopnames
         print 'interFlags: ', interFlags
+        print 'linelist: ', options.linelist
 
 
     #######################################################################
@@ -143,7 +147,7 @@ def main():
         # Establish the wavelength calibration
         try:
             gemini.gswavelength('gs'+options.arcfile,
-                coordlist="linelists$cuar.dat", fwidth=10, cradius=12,
+                coordlist=options.linelist, fwidth=10, cradius=12,
                 minsep=5., logfile=options.logfile)
         except:
             print 'Problem in GSWAVELENGTH'

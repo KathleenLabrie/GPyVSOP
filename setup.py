@@ -45,14 +45,15 @@ SCRIPTS = None
 GPYVSOP_BIN_LINKS = [   'gmosLS',
                         'publish',
                         'setvsop',
-                        'splot' ]
+                        #'splot' 
+                    ]
 # links created after setup()
 
 # EXTENSIONS
 EXTENSIONS = None
 
 setup ( name='GPyVSOP',
-        version='1.0.4',
+        version='1.0.5',
         description='Gemini VSOP Data Reduction Package',
         author='Kathleen Labrie',
         author_email='klabrie@gemini.edu',
@@ -98,7 +99,10 @@ if args[0] == 'install':
 
     os.chdir(bindir)
     for bin in GPYVSOP_BIN_LINKS:
-        os.remove(bin)
+        try:
+            os.remove(bin)
+        except:
+            pass
         os.symlink(os.path.join(gpyvsoppath, bin+'.py'), bin)
         os.chmod(os.path.join(gpyvsoppath, bin+'.py'), 0755)
 

@@ -46,7 +46,7 @@ def getvsopname(gemfile, instrument, path):
     
     
 def mef2fits(mef, extname, extver):
-    print 'In mef2fits'
+
     inhdulist = pyfits.open(mef)
     
     # inhdulist is a PHU + a SCI extension (with hdr & data)
