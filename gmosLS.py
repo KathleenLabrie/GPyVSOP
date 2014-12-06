@@ -39,6 +39,7 @@ def main():
     p = optparse.OptionParser(usage=usage, version='v'+VERSION)
     p.add_option('--debug', action='store_true', help='toggle debug messages')
     p.add_option('--verbose', '-v', action='store_true', help="toggle on verbose mode")
+    p.add_option('--noover', action='store_true', help='toggle off the overscan correction')
     p.add_option('--bias', action='store', type='string', dest='procbias', help='name of the processed bias file')
     p.add_option('--arc', action='store', type='string', dest='arcfile', help='name of the arc file')
     p.add_option('--flat', action='store', type='string', dest='flatfile', help='name of the flat file')
@@ -64,6 +65,11 @@ def main():
     extname = 'SCI'
     extver = 1
 
+    if options.noover:
+        do_overscan = 'no'
+    else:
+        do_overscan = 'yes'
+        
     if options.combine:
         print 'SPECTRUM COMBINATION NOT IMPLEMENTED YET'
         print 'Exiting'
@@ -102,7 +108,7 @@ def main():
         procflat = options.flatfile+'_flat.fits'
         try:
             gemini.gsflat(options.flatfile, procflat, order=29, 
-                rawpath=options.rawdir+'/', 
+                rawpath=options.rawdir+'/', fl_over=do_overscan,
                 bias=options.rawdir+'/'+options.procbias,
                 logfile=options.logfile)
         except:
@@ -118,7 +124,7 @@ def main():
     # Reduce the science spectrum
     inputstr = ','.join(inlist)
     try:
-        gemini.gsreduce(inputstr, rawpath=options.rawdir+'/',
+        gemini.gsreduce(inputstr, rawpath=options.rawdir+'/', fl_over=do_overscan,
             bias=options.rawdir+'/'+options.procbias, fl_gscrrej='yes',
             fl_inter=interFlags['crrej'], fl_flat=fl_flat, flat=procflat,
             logfile=options.logfile)
@@ -134,7 +140,7 @@ def main():
         # Reduce the arc
         try:
             gemini.gsreduce(options.arcfile, rawpath=options.rawdir+'/',
-                fl_flat='no', fl_fixpix='no',
+                fl_flat='no', fl_fixpix='no', fl_over=do_overscan,
                 bias=options.rawdir+'/'+options.procbias,
                 logfile=options.logfile)
         except:
